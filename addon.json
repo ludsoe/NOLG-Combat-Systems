@@ -1,0 +1,13 @@
+{
+	"title"		:	"High Tech Combat Systems",
+	"type"		:	"gamemode",
+	"tags"		:	[ "fun", "build" ],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.git*",
+		"*.lde*",
+		"*.txt*"
+	]
+}
