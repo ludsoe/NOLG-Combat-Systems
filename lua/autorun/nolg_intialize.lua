@@ -49,6 +49,7 @@ LoadFile("nolg/utilities/sh_utility.lua",1)
 LoadFile("nolg/utilities/sh_networking.lua",1)
 LoadFile("nolg/utilities/sh_datamanagement.lua",1)
 LoadFile("nolg/utilities/sh_vguiease.lua",1)
+LoadFile("nolg/utilities/sh_constraints.lua",1)
 
 LoadFile("nolg/nolg_damagesystem.lua",2)
 

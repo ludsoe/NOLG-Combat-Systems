@@ -16,7 +16,7 @@ local MinHealth = 100 -- Minimum Health Allowed
 
 --Calculates an entitys health, and returns it.
 function Dams.CalculateEntityHealth(entity) 
-	local health = math.Round(Dams.GetVolume(ent)*0.01)
+	local health = math.Round(Dams.GetVolume(entity)*0.01)
 	
 	Dams.SetMaxHealth(entity,health)
 	Dams.SetHealth(entity,health)
@@ -116,7 +116,8 @@ end
 
 --Grabs the volume of an entity
 function Dams.GetVolume(ent)
-	local dif = ent:OBBMaxs() - ent:OBBMins()	
+	if not IsValid(ent) then return 0 end
+	local dif = ent:OBBMaxs() - ent:OBBMins()
 	return dif.x * dif.y * dif.z
 end
 

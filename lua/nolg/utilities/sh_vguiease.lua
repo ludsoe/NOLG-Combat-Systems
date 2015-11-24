@@ -177,7 +177,7 @@ if(CLIENT)then
 		local Derma = vgui.Create( "DLabel", Parent )
 			Derma:SetPos( Spot.x, Spot.y )
 			Derma:SetText( Text or "" )
-			Derma:SetFont(Font)
+			if Font then Derma:SetFont(Font) end
 			Derma:SetTextColor( Color or NOLG.GuiThemeColor.Text )
 			Derma.OldText = Derma.SetText
 			Derma.SetText = function(self,Text)
