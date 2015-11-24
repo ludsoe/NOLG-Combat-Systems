@@ -66,7 +66,7 @@ function Dams.DealDamage(ent,amount,attacker,inflictor,ignoresafe)
 	
 	if ent:IsPlayer() or ent:IsNPC() then Dams.DealPlyDamage(ent,amount,attacker,inflictor) return end
 	
-	--LDE:DamageShields(ent,amount,false,attacker)
+	Dams.DamageHealth(ent,amount,false,attacker)
 end
 
 --Does damage directly to the health of a entity
