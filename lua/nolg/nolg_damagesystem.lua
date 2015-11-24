@@ -46,17 +46,71 @@ end
 
 ----Damage Dealing and Repair----
 
+--Player Damage
+function Dams.DealPlyDamage(ent,amount,attacker,inflictor)
+	ent:TakeDamage(amount,inflictor,attacker)
+	return true
+end
+
 --Damage dealing function.
-function Dams.DealDamage(entity,damage) end
+function Dams.DealDamage(ent,amount,attacker,inflictor,ignoresafe)	
+	if not IsValid(ent) or not Dams.CheckValid( ent ) then return end
+	if not amount then return end
+	
+	ent.attacker = attacker
+	ent.LastAttacked = CurTime()
+
+	amount=math.floor(math.abs(amount))
+
+	if amount<=0 then return end
+	
+	if ent:IsPlayer() or ent:IsNPC() then Dams.DealPlyDamage(ent,amount,attacker,inflictor) return end
+	
+	--LDE:DamageShields(ent,amount,false,attacker)
+end
+
+--Does damage directly to the health of a entity
+function Dams.DamageHealth(ent,amount,override,attacker)
+	--Makesure its a valid run.
+	if not IsValid(ent) or not Dams.CheckValid( ent ) then return end
+
+	local Health = Dams.GetHealth( ent )
+	if Health > amount then
+		Dams.SetHealth(ent,Health-amount) 
+	else
+		LDE:BreakOff(ent)
+	end
+end
 
 --Repair function
 function Dams.RepairEntity(entity,amount) end
 
---Utility function to mark entity as dead.
-function Dams.MarkAsDead(entity) end
+function Dams.BreakOff(ent,dir)
+	if IsValid(ent) then return end
+	
+	ent:SetParent(nil) --Break the dead part off from the ship.
+	constraint.RemoveAll( ent )
+	ent:SetSolid( SOLID_VPHYSICS )
+	ent:SetCollisionGroup(COLLISION_GROUP_PROJECTILE) 
+	ent:DrawShadow( false )
+	ent:Fire("enablemotion","",0)
 
---Marks a entity as dead if part of a contraption, removes if not.
-function Dams.KillEntity(entity) end
+	local delay = (math.random(300, 800) / 100)
+	timer.Create("Kill "..ent:EntIndex(),delay+10,1,function() Dams.KillEnt(ent) end) --Kill the ent after some time has passed.
+	local physobj = ent:GetPhysicsObject()
+	if IsValid(physobj) and dir~=nil then
+		physobj:Wake()
+		physobj:EnableMotion(true)
+		local mass = physobj:GetMass()
+		physobj:ApplyForceCenter(dir)				
+	end
+end
+
+function Dams.KillEnt(ent)
+	if not IsValid(ent) or ent:IsPlayer() then if ent:IsPlayer() then ent:Kill() end return end
+
+	ent:Remove()
+end
 
 ----Support Functions----
 
